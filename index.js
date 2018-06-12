@@ -19,9 +19,7 @@ app.get('/api/courses', (req, res) => {
 app.post('/api/courses', (req, res) => {
     const { error } = validateCourse(req.body);
 
-    if (error) {
-        return res.status(400).send(error.details[0].message);
-    };
+    if (error) return res.status(400).send(error.details[0].message);
 
     const course = {
         id: 0,
@@ -40,13 +38,11 @@ app.put('/api/courses/:id', (req, res) => {
         id: req.params.id,
         name: req.body.name
     };
-    
+
     const { error } = validateCourse(req.body);
-    
-    if (error) {
-        return res.status(400).send(error.details[0].message);
-    };
-    
+
+    if (error) return res.status(400).send(error.details[0].message);
+
     const updatedCourse = courseController.put(course);
 
     res.send(updatedCourse);
@@ -55,7 +51,7 @@ app.put('/api/courses/:id', (req, res) => {
 app.delete('/api/courses/:id', (req, res) => {
     const course = courseController.delete(req.params.id);
 
-    if (!course) res.status(404).send('Course not found');
+    if (!course) return res.status(404).send('Course not found');
 
     res.send(course);
 });
@@ -65,7 +61,7 @@ app.get('/api/courses/:id', (req, res) => {
     //res.send(req.params.id);
     const course = courseController.getOne(req.params.id);
 
-    if (!course) res.status(404).send('Course not found');
+    if (!course) return res.status(404).send('Course not found');
 
     res.send(course);
 });
